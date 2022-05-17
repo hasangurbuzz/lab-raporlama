@@ -1,51 +1,70 @@
 package com.hasan.laboratuvarraporlama.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Lob;
+import javax.persistence.*;
 
 @Entity
+@Table(name = "REPORTS")
 public class Report {
 
     @Id
-    @Column(length = 11)
-    private Integer patientIdentityNum;
-    private String fileNum;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "file_num")
+    private Integer fileNum;
+
+    @Column(length = 11, name = "patient_identity_num")
+    private String patientIdentityNum;
+
     private String patientName;
+
     private String patientLastName;
+
+
     private String diagnosisTitle;
+
     @Lob
-    private byte[] image;
+    private String imageData;
+
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "lab_identity", nullable = false)
+    private Laborant laborant;
 
 
     public Report() {
     }
 
-    public Report(String fileNum, String patientName, String patientLastName,
-                  Integer patientIdentityNum, String diagnosisTitle, byte[] image) {
-        this.fileNum = fileNum;
+    public Report(String patientIdentityNum, String patientName, String patientLastName,
+                  String diagnosisTitle, String imageData) {
+
         this.patientIdentityNum = patientIdentityNum;
         this.patientName = patientName;
         this.patientLastName = patientLastName;
         this.diagnosisTitle = diagnosisTitle;
-        this.image = image;
+        this.imageData = imageData;
     }
 
-    public byte[] getImage() {
-        return image;
-    }
-
-    public void setImage(byte[] image) {
-        this.image = image;
-    }
-
-    public String getFileNum() {
+    public Integer getFileNum() {
         return fileNum;
     }
 
-    public void setFileNum(String id) {
-        this.fileNum = id;
+    public void setFileNum(Integer fileNum) {
+        this.fileNum = fileNum;
+    }
+
+    public String getPatientIdentityNum() {
+        return patientIdentityNum;
+    }
+
+    public void setPatientIdentityNum(String patientIdentityNum) {
+        this.patientIdentityNum = patientIdentityNum;
+    }
+
+    public Laborant getLaborant() {
+        return laborant;
+    }
+
+    public void setLaborant(Laborant laborant) {
+        this.laborant = laborant;
     }
 
 
@@ -65,13 +84,6 @@ public class Report {
         this.patientLastName = patientLastName;
     }
 
-    public Integer getPatientIdentityNum() {
-        return patientIdentityNum;
-    }
-
-    public void setPatientIdentityNum(Integer patient_identity_num) {
-        this.patientIdentityNum = patient_identity_num;
-    }
 
     public String getDiagnosisTitle() {
         return diagnosisTitle;
@@ -79,5 +91,13 @@ public class Report {
 
     public void setDiagnosisTitle(String diagnosis_title) {
         this.diagnosisTitle = diagnosis_title;
+    }
+
+    public String getImageData() {
+        return imageData;
+    }
+
+    public void setImageData(String imageData) {
+        this.imageData = imageData;
     }
 }

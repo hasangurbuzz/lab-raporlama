@@ -11,5 +11,12 @@ public interface ReportService {
 
     List<Report> getReports();
 
+    Report getReportById(Integer id);
+
+    void updateReport(Report report,Integer id);
+
+
+    void deleteReportById(Integer id);
+
 
 }

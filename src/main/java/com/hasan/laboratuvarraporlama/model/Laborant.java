@@ -1,34 +1,43 @@
 package com.hasan.laboratuvarraporlama.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Set;
 
 @Entity
+@Table(name = "LABORANT")
 public class Laborant {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(length = 7)
-    private String identity_num;
+    private Integer identityNum;
     private String name;
-    private String last_name;
+    private String lastName;
 
+    @OneToMany(mappedBy = "laborant", fetch = FetchType.LAZY)
+    private Set<Report> reports;
 
     public Laborant() {
     }
 
-    public Laborant(String name, String last_name, String identity_num) {
-
+    public Laborant(String name, String lastName) {
         this.name = name;
-        this.last_name = last_name;
-        this.identity_num = identity_num;
+        this.lastName = lastName;
     }
 
-    public String getIdentity_num() {
-        return identity_num;
+    public Set<Report> getReports() {
+        return reports;
     }
 
-    public void setIdentity_num(String identity_num) {
-        this.identity_num = identity_num;
+    public void setReports(Set<Report> reports) {
+        this.reports = reports;
+    }
+
+    public Integer getIdentityNum() {
+        return identityNum;
+    }
+
+    public void setIdentityNum(Integer identity_num) {
+        this.identityNum = identity_num;
     }
 
 
@@ -40,12 +49,12 @@ public class Laborant {
         this.name = name;
     }
 
-    public String getLast_name() {
-        return last_name;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setLast_name(String last_name) {
-        this.last_name = last_name;
+    public void setLastName(String last_name) {
+        this.lastName = last_name;
     }
 
 
