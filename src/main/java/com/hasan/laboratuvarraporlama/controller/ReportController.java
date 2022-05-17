@@ -72,6 +72,7 @@ public class ReportController {
         return new RedirectView("/report");
     }
 
+    //putmapping
     @PostMapping("/update")
     public RedirectView updateReport(
             @Validated ReportRequest reportRequest
@@ -85,6 +86,7 @@ public class ReportController {
         return new RedirectView("/report");
     }
 
+    //deletemapping
     @PostMapping("/{fileNum}")
     public RedirectView deleteReport(
             @PathVariable Integer fileNum
@@ -95,6 +97,9 @@ public class ReportController {
         return new RedirectView("/report");
 
     }
+
+
+
 
 
 }
