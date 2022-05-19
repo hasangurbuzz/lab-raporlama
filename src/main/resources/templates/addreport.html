@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="tr" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+</head>
+<body>
+<div class="container-sm">
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/report">Tüm Raporlar</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Rapor Ekle</li>
+        </ol>
+    </nav>
+    <h2>Rapor ekle</h2>
+
+
+    <form method="post" action="/report/add" class="row g-3 needs-validation" enctype="multipart/form-data"
+    >
+        <div class="mb-3">
+            <label for="input_p_identity_num" class="form-label">Hasta TC</label>
+            <input class="form-control" name="patientIdentityNum" type="text" id="input_p_identity_num" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="input_p_name" class="form-label">Hasta Adı</label>
+            <input class="form-control" name="patientName" type="text" id="input_p_name" required>
+        </div>
+        <div class="mb-3">
+            <label for="input_p_lastname" class="form-label">Hasta Soyadı</label>
+            <input class="form-control" name="patientLastName" type="text" id="input_p_lastname" required>
+        </div>
+        <div class="mb-3">
+            <label for="input_date" class="form-label">Rapor Tarihi</label>
+            <input class="form-control" name="reportDate" type="date"  id="input_date" required>
+        </div>
+        <div class="mb-3">
+            <label for="input_diag_title" class="form-label">Tanı Başlığı</label>
+            <input class="form-control" name="diagnosisTitle" type="text" id="input_diag_title" required>
+        </div>
+        <div class="mb-3">
+            <label for="input_diag_detail" class="form-label">Tanı Detayları</label>
+            <input class="form-control" name="diagnosisDetail" type="text" id="input_diag_detail" required>
+        </div>
+        <div class="mb-3">
+            <input type="file" accept=".jpg, .jpeg, .png" name="imageFile" class="form-control"
+                   aria-label="file example"
+                   required>
+        </div>
+
+        <div class="row">
+            <input type="submit" class="btn btn-primary">
+            <a href="/report" class="btn btn-danger">İptal</a>
+        </div>
+    </form>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
+
+<script src="/js/addReport.js"></script>
+
+
+</body>
+</html>

@@ -8,12 +8,18 @@ public class ReportRequest {
     private String patientName;
     private String patientLastName;
     private String diagnosisTitle;
+    private String diagnosisDetail;
+    private String reportDate;
     private MultipartFile imageFile;
-    public ReportRequest(String patientIdentityNum, String patientName, String patientLastName, String diagnosisTitle, MultipartFile imageFile) {
+
+    public ReportRequest(String patientIdentityNum, String patientName, String patientLastName,
+                         String diagnosisTitle, String diagnosisDetail, String reportDate, MultipartFile imageFile) {
         this.patientIdentityNum = patientIdentityNum;
         this.patientName = patientName;
         this.patientLastName = patientLastName;
         this.diagnosisTitle = diagnosisTitle;
+        this.diagnosisDetail = diagnosisDetail;
+        this.reportDate = reportDate;
         this.imageFile = imageFile;
     }
 
@@ -23,6 +29,14 @@ public class ReportRequest {
 
     public void setFileNum(Integer fileNum) {
         this.fileNum = fileNum;
+    }
+
+    public String getReportDate() {
+        return reportDate;
+    }
+
+    public void setReportDate(String reportDate) {
+        this.reportDate = reportDate;
     }
 
     public String getPatientIdentityNum() {
@@ -65,4 +79,12 @@ public class ReportRequest {
         this.imageFile = imageFile;
     }
 
+
+    public String getDiagnosisDetail() {
+        return diagnosisDetail;
+    }
+
+    public void setDiagnosisDetail(String diagnosisDetail) {
+        this.diagnosisDetail = diagnosisDetail;
+    }
 }

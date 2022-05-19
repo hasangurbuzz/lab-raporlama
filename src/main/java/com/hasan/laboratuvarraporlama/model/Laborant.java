@@ -7,7 +7,6 @@ import java.util.Set;
 @Table(name = "LABORANT")
 public class Laborant {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(length = 7)
     private Integer identityNum;
     private String name;
@@ -19,7 +18,8 @@ public class Laborant {
     public Laborant() {
     }
 
-    public Laborant(String name, String lastName) {
+    public Laborant(Integer identityNum, String name, String lastName) {
+        this.identityNum = identityNum;
         this.name = name;
         this.lastName = lastName;
     }

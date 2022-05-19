@@ -13,37 +13,48 @@
     <form th:name="report" method="post" action="/report/update" class="row g-3 needs-validation"
           enctype="multipart/form-data">
         <div class="mb-3">
-            <label for="validationCustom02" class="form-label">Dosya no</label>
+            <label for="input_file_num" class="form-label">Dosya no</label>
             <input th:value="${report.getFileNum()}" class="form-control" name="fileNum" type="text"
-                   id="validationCustom02" hidden="hidden" >
+                   id="input_file_num" readonly>
         </div>
         <div class="mb-3">
-            <label for="validationCustom01" class="form-label">Hasta TC</label>
+            <label for="input_p_identity_num" class="form-label">Hasta TC</label>
             <input th:value="${report.getPatientIdentityNum()}" class="form-control" name="patientIdentityNum"
-                   type="text" id="validationCustom01" required>
+                   type="text" id="input_p_identity_num" required>
         </div>
 
         <div class="mb-3">
-            <label for="validationCustom03" class="form-label">Hasta Adı</label>
+            <label for="input_p_name" class="form-label">Hasta Adı</label>
             <input th:value="${report.getPatientName()}" class="form-control" name="patientName" type="text"
-                   id="validationCustom03" required>
+                   id="input_p_name" required>
         </div>
         <div class="mb-3">
-            <label for="validationCustom04" class="form-label">Hasta Soyadı</label>
+            <label for="input_p_lastname" class="form-label">Hasta Soyadı</label>
             <input th:value="${report.getPatientLastName()}" class="form-control" name="patientLastName" type="text"
-                   id="validationCustom04" required>
+                   id="input_p_lastname" required>
         </div>
         <div class="mb-3">
-            <label for="validationCustom05" class="form-label">Tanı Başlığı</label>
+            <label for="input_date" class="form-label">Rapor Tarihi</label>
+            <input th:value="${report.getReportDate()}" class="form-control" name="reportDate" type="date"
+                   id="input_date" required>
+        </div>
+        <div class="mb-3">
+            <label for="input_diag_title" class="form-label">Tanı Başlığı</label>
             <input th:value="${report.getDiagnosisTitle()}" class="form-control" name="diagnosisTitle" type="text"
-                   id="validationCustom05" required>
+                   id="input_diag_title" required>
+        </div>
+        <div class="mb-3">
+            <label for="input_diag_detail" class="form-label">Tanı Detayları</label>
+            <input th:value="${report.getDiagnosisDetail()}" class="form-control" name="diagnosisDetail" type="text"
+                   id="input_diag_detail" required>
         </div>
         <div class="mb-3">
             <input type="file" accept=".jpg, .jpeg, .png" name="imageFile" class="form-control"
-                   aria-label="file example"
-            >
+                   aria-label="file example">
         </div>
         <input type="submit" class="btn btn-primary">
+        <a th:href="'/report/'+${report.getFileNum()}" class="btn btn-danger">İptal</a>
+
     </form>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"

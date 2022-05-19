@@ -2,19 +2,18 @@ package com.hasan.laboratuvarraporlama.repository;
 
 import com.hasan.laboratuvarraporlama.model.Report;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import javax.transaction.Transactional;
+import java.util.List;
 
 @Repository
 public interface ReportRepository extends JpaRepository<Report, Integer> {
 
-    @Transactional
-    @Modifying
-    @Query("UPDATE Report u set u = :report where u.fileNum = :fileNum")
-    void updateReportById(@Param("fileNum") Integer fileNum, @Param("report") Report report);
+    List<Report> getReportsByLaborant_NameAndLaborant_LastName(String laborantName, String laborantLastName);
+
+    List<Report> getReportByPatientNameAndPatientLastName(String patientName, String patientLastName);
+
+    List<Report> getReportByPatientIdentityNum(String patientIdentityNum);
+
 
 }

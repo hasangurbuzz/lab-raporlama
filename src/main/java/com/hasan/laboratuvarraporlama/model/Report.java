@@ -1,6 +1,8 @@
 package com.hasan.laboratuvarraporlama.model;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 @Table(name = "REPORTS")
@@ -14,12 +16,19 @@ public class Report {
     @Column(length = 11, name = "patient_identity_num")
     private String patientIdentityNum;
 
+    @Column(length = 20)
     private String patientName;
 
+    @Column(length = 20)
     private String patientLastName;
 
-
+    @Column(length = 30)
     private String diagnosisTitle;
+
+    @Column(length = 500)
+    private String diagnosisDetail;
+
+    private LocalDate reportDate;
 
     @Lob
     private String imageData;
@@ -33,13 +42,23 @@ public class Report {
     public Report() {
     }
 
+    public String getDiagnosisDetail() {
+        return diagnosisDetail;
+    }
+
+    public void setDiagnosisDetail(String diagnosisDetail) {
+        this.diagnosisDetail = diagnosisDetail;
+    }
+
     public Report(String patientIdentityNum, String patientName, String patientLastName,
-                  String diagnosisTitle, String imageData) {
+                  String diagnosisTitle, String diagnosisDetail, LocalDate reportDate, String imageData) {
 
         this.patientIdentityNum = patientIdentityNum;
         this.patientName = patientName;
         this.patientLastName = patientLastName;
         this.diagnosisTitle = diagnosisTitle;
+        this.diagnosisDetail = diagnosisDetail;
+        this.reportDate = reportDate;
         this.imageData = imageData;
     }
 
@@ -99,5 +118,20 @@ public class Report {
 
     public void setImageData(String imageData) {
         this.imageData = imageData;
+    }
+
+    public LocalDate getReportDate() {
+        return reportDate;
+    }
+
+    public void setReportDate(LocalDate reportDate) {
+        this.reportDate = reportDate;
+    }
+
+    public String getFormattedDate() {
+        String pattern = "dd-MM-yyyy";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
+        return formatter.format(reportDate);
+
     }
 }
