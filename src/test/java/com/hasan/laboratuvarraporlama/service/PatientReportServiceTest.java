@@ -66,6 +66,12 @@ class PatientReportServiceTest {
         report.setDiagnosisTitle("diagtitle");
         report.setDiagnosisDetail("diagdetail");
 
+        Patient patient = new Patient();
+
+        patient.setIdentityNum(16841687270L);
+
+        report.setPatient(patient);
+
 
         patientReportService.saveReport(report);
 
@@ -88,6 +94,12 @@ class PatientReportServiceTest {
         report.setDiagnosisTitle("diagtitle");
         report.setDiagnosisDetail("diagdetail");
 
+        Patient patient = new Patient();
+
+        patient.setIdentityNum(16841687270L);
+
+        report.setPatient(patient);
+
         given(reportRepository.findById(report.getFileNum()))
                 .willReturn(Optional.of(report));
 
@@ -109,10 +121,16 @@ class PatientReportServiceTest {
         Report report = new Report();
         report.setImageData("");
 
+        Patient patient = new Patient();
+
+        patient.setIdentityNum(16841687270L);
+
+        report.setPatient(patient);
+
         Report stored = new Report();
         stored.setImageData("storedimagedata");
 
-        given(reportRepository.findById(anyInt()))
+        given(reportRepository.findById(report.getFileNum()))
                 .willReturn(Optional.of(stored));
 
         patientReportService.updateReport(report);
