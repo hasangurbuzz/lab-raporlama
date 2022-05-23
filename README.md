@@ -67,6 +67,14 @@ You can list running containers with
 ```
 If container is active you can go to [http://localhost:8080](http://localhost:8080)
 ---
+##### Default Users For Login
+```
+USERNAME  PASSWORD
+------------------
+admin     admin
+user      password
+```
+---
 Also you can change connection port. 
 
 ```bash
