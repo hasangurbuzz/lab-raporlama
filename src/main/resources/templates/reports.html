@@ -3,31 +3,56 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Reports</title>
+    <title>Raporlar</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 </head>
-<body>
-<div class="container">
+<body style="background: #eee">
+<div class="container" style="padding: 20px">
 
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item active" aria-current="page">Tüm Raporlar</li>
+        </ol>
+    </nav>
 
-    <div class="d-flex justify-content-center">
-        <a href="/report/add" class="btn btn-outline-primary">Rapor ekle </a>
-        <a href="/report/search" class="btn btn-outline-info">Ara</a>
+    <div class="d-flex justify-content-between">
+        <a href="/report/add" class="btn btn-primary">Rapor ekle </a>
+        <a href="/report/search" class="btn btn-dark">Ara</a>
+        <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton2"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                Tarihe Göre Sıralama
+            </button>
+            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton2">
+                <li><a th:class="'dropdown-item '+${!orderStatus ? 'active': ''}"
+                       href="/report/?orderAsc=false">Önce En Yeniler</a></li>
+
+                <li><a th:class="'dropdown-item '+${orderStatus ? 'active': ''}"
+                       href="/report/?orderAsc=true">Önce En Eskiler</a></li>
+            </ul>
+        </div>
+        <form method="post" action="/logout">
+            <input type="hidden"
+                   th:name="${_csrf.parameterName}"
+                   th:value="${_csrf.token}"/>
+            <button class="btn btn-danger" type="submit">Çıkış Yap</button>
+        </form>
 
         <div th:if="${reportList == null}">
             <p>Kayıtlı rapor bulunamadı</p>
         </div>
 
-
     </div>
-    <div class="container" th:if="${reportList != null}">
+
+
+    <div class="container" th:if="${reportList != null}" style="margin-top: 20px">
         <div class="row row-cols-1 ">
             <div>
                 <div class="accordion" id="accordion">
                     <div class="accordion-item" th:each="report: ${reportList}">
                         <h2 class="accordion-header" th:id="'heading'+${report.getFileNum()}">
-                            <button class="accordion-button" type="button" aria-expanded="false"
+                            <button class="accordion-button collapsed" type="button" aria-expanded="false"
                                     th:text="${report.getDiagnosisTitle()}"
                                     data-bs-toggle="collapse"
                                     data-th-attr=
@@ -45,14 +70,15 @@
                                     <div class="col-4">
                                         <div class="row">
                                             <p class="text-capitalize"
-                                               th:text="'Hasta Adı Soyadı: '+ ${report.getPatientName()} + ' '+ ${report.getPatientLastName()}"></p>
+                                               th:text="'Hasta Adı Soyadı: '+ ${report.getPatient().getName()} + ' '+ ${report.getPatient().getLastName()}"></p>
                                         </div>
                                     </div>
                                     <div class="col-4">
                                         <div class="row">
                                             <p class="text-capitalize" style="text-align: center"
                                                th:text="'Laborant Adı Soyadı: '+ ${report.getLaborant().getName()} + ' '+ ${report.laborant.getLastName()}"></p>
-                                            <a th:href="'/report/'+${report.getFileNum()}" class="btn btn-primary">Detaylar</a>
+                                            <a th:href="'/report/detail/'+${report.getFileNum()}"
+                                               class="btn btn-primary">Detaylar</a>
                                         </div>
                                     </div>
                                     <div class="col">
@@ -77,154 +103,3 @@
         crossorigin="anonymous"></script>
 </body>
 </html>
-<!--                    <div class="accordion-item">-->
-<!--                        <h2 class="accordion-header" id="headingTwo" th:id="heading+${report.getFileNum()+1}">-->
-<!--                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"-->
-<!--                                    aria-expanded="false"-->
-<!--                                    th:attr=-->
-<!--                                            "-->
-<!--                                             data-bs-target='#collapse'+${report.getFileNum()+1},-->
-<!--                                             aria-controls='collapse'+${report.getFileNum()+1}">-->
-<!--                                Accordion Item #2-->
-<!--                            </button>-->
-<!--                        </h2>-->
-<!--                        <div th:id="'collapse'+${report.getFileNum()+1}" class="accordion-collapse collapse"-->
-<!--                             th:attr="aria-labelledby='heading'+${report.getFileNum()+1}"-->
-<!--                             data-bs-parent="#accordion">-->
-<!--                            <div class="accordion-body">-->
-<!--                                <strong>This is the second item's accordion body.</strong> It is hidden by default,-->
-<!--                                until the collapse plugin adds the appropriate classes that we use to style each-->
-<!--                                element. These classes control the overall appearance, as well as the showing and hiding-->
-<!--                                via CSS transitions. You can modify any of this with custom CSS or overriding our-->
-<!--                                default variables. It's also worth noting that just about any HTML can go within the-->
-<!--                                <code>.accordion-body</code>, though the transition does limit overflow.-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </div>-->
-
-
-<!--<div class="accordion" th:id="'accordion'+${report.getFileNum()}">-->
-<!--    <div class="accordion-item">-->
-<!--        <h2 class="accordion-header" th:id="'heading'+${report.getFileNum()}">-->
-<!--            <button class="accordion-button collapsed" type="button"-->
-<!--                    data-bs-toggle="collapse"-->
-<!--                    th:attr="data-bs-target='#collapse'+${report.getFileNum()},-->
-<!--                                            aria-controls='collapse'+${report.getFileNum()}"-->
-<!--                    aria-expanded="false"-->
-<!--            >-->
-<!--                Detaylar-->
-<!--            </button>-->
-<!--        </h2>-->
-<!--        <div th:id="'collapse'+${report.getFileNum()}"-->
-<!--             class="accordion-collapse collapse in"-->
-
-<!--             th:attr="data-bs-parent='#accordion'+${report.getFileNum()},-->
-<!--                                                aria-labelledby='heading'+${report.getFileNum()}"-->
-<!--        >-->
-<!--            <div class="accordion-body">-->
-<!--                <p class="card-text"-->
-<!--                   th:text="'Hasta Ad Soyad: '+ ${report.getPatientName()+' '+ report.getPatientLastName()}"></p>-->
-<!--                <p class="card-text"-->
-<!--                   th:text="'Laborant Ad Soyad: '+ ${report.getLaborant().getName()} +' '+${report.getLaborant().getLastName()}"></p>-->
-<!--                <p class="card-text"-->
-<!--                   th:text="'Tarih: '+ ${report.getFormattedDate()}"></p>-->
-<!--                <div class="d-flex justify-content-center align-items-center">-->
-<!--                    <a th:href="'/report/'+ ${report.getFileNum()}" class="btn btn-primary">Düzenle</a>-->
-<!--                    <div class="col-sm"></div>-->
-<!--                    <form method="post" th:action="'/report/'+ ${report.getFileNum()}">-->
-<!--                        <input name="fileNum" class="btn btn-danger" type="submit"-->
-<!--                               value="Sil">-->
-<!--                    </form>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</div>-->
-
-<!--<div class="accordion" id="accordionExample">-->
-<!--    <div class="accordion-item">-->
-<!--        <h2 class="accordion-header" id="headingOne">-->
-<!--            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">-->
-<!--                Accordion Item #1-->
-<!--            </button>-->
-<!--        </h2>-->
-<!--        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">-->
-<!--            <div class="accordion-body">-->
-<!--                <strong>This is the first item's accordion body.</strong> It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--    <div class="accordion-item">-->
-<!--        <h2 class="accordion-header" id="headingTwo">-->
-<!--            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">-->
-<!--                Accordion Item #2-->
-<!--            </button>-->
-<!--        </h2>-->
-<!--        <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">-->
-<!--            <div class="accordion-body">-->
-<!--                <strong>This is the second item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--    <div class="accordion-item">-->
-<!--        <h2 class="accordion-header" id="headingThree">-->
-<!--            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">-->
-<!--                Accordion Item #3-->
-<!--            </button>-->
-<!--        </h2>-->
-<!--        <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">-->
-<!--            <div class="accordion-body">-->
-<!--                <strong>This is the third item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</div>-->
-
-<!--<div class="card "  style="width: 13rem;">-->
-<!--    <img th:src="'data:reportImage/png;base64,'+ ${report.getImageData()}" class="card-img-top"-->
-<!--         alt="">-->
-<!--    <div class="card-body">-->
-<!--        <h6 class="card-title" th:text="'Tanı başlığı: '+${report.getDiagnosisTitle()}"></h6>-->
-<!--        <div class="accordion" th:id="'accordion'+${report.getFileNum()}">-->
-<!--            <div class="accordion-item">-->
-<!--                <h2 class="accordion-header" th:id="'heading'+${report.getFileNum()}">-->
-<!--                    <button class="accordion-button collapsed" type="button"-->
-<!--                            data-bs-toggle="collapse"-->
-<!--                            th:attr="data-bs-target='#collapse'+${report.getFileNum()},-->
-<!--                                            aria-controls='collapse'+${report.getFileNum()}"-->
-<!--                            aria-expanded="false"-->
-<!--                    >-->
-<!--                        Detaylar-->
-<!--                    </button>-->
-<!--                </h2>-->
-<!--                <div th:id="'collapse'+${report.getFileNum()}"-->
-<!--                     class="accordion-collapse collapse in"-->
-
-<!--                     th:attr="data-bs-parent='#accordion'+${report.getFileNum()},-->
-<!--                                                aria-labelledby='heading'+${report.getFileNum()}"-->
-<!--                >-->
-<!--                    <div class="accordion-body">-->
-<!--                        <p class="card-text"-->
-<!--                           th:text="'Hasta Ad Soyad: '+ ${report.getPatientName()+' '+ report.getPatientLastName()}"></p>-->
-<!--                        <p class="card-text"-->
-<!--                           th:text="'Laborant Ad Soyad: '+ ${report.getLaborant().getName()} +' '+${report.getLaborant().getLastName()}"></p>-->
-<!--                        <p class="card-text"-->
-<!--                           th:text="'Tarih: '+ ${report.getFormattedDate()}"></p>-->
-<!--                        <div class="d-flex justify-content-center align-items-center">-->
-<!--                            <a th:href="'/report/'+ ${report.getFileNum()}" class="btn btn-primary">Düzenle</a>-->
-<!--                            <div class="col-sm"></div>-->
-<!--                            <form method="post" th:action="'/report/'+ ${report.getFileNum()}">-->
-<!--                                <input name="fileNum" class="btn btn-danger" type="submit"-->
-<!--                                       value="Sil">-->
-<!--                            </form>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-
-
-<!--    </div>-->
-
-<!--</div>
--->

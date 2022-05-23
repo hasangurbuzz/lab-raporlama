@@ -14,16 +14,23 @@ import java.util.Set;
 @AllArgsConstructor
 
 @Entity
-@Table(name = "LABORANT")
-public class Laborant {
+@Table(name = "PATIENT")
+public class Patient {
     @Id
-    @Column(length = 7)
-    private Integer identityNum;
+    @Column(length = 11)
+    private Long identityNum;
+
+    @Column(length = 30)
     private String name;
+
+    @Column(length = 30)
     private String lastName;
 
-    @OneToMany(mappedBy = "laborant", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+
+
+    @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Report> reports;
 
 
 }
+

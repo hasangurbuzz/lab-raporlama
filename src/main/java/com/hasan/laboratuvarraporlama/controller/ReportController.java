@@ -1,10 +1,10 @@
 package com.hasan.laboratuvarraporlama.controller;
 
 import com.hasan.laboratuvarraporlama.dto.ReportRequest;
-import com.hasan.laboratuvarraporlama.mapper.ReportMapper;
+import com.hasan.laboratuvarraporlama.dto.SearchRequest;
+import com.hasan.laboratuvarraporlama.mapper.RequestMapper;
 import com.hasan.laboratuvarraporlama.model.Report;
-import com.hasan.laboratuvarraporlama.model.SearchRequest;
-import com.hasan.laboratuvarraporlama.service.LaborantService;
+import com.hasan.laboratuvarraporlama.service.PatientReportService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
@@ -21,29 +21,40 @@ import java.util.Optional;
 public class ReportController {
 
 
-    private final LaborantService laborantService;
-    private final ReportMapper reportMapper;
+    private final PatientReportService patientReportService;
+    private final RequestMapper requestMapper;
 
 
-    public ReportController(
-            LaborantService laborantService, ReportMapper reportMapper) {
-        this.laborantService = laborantService;
-        this.reportMapper = reportMapper;
+    public ReportController(PatientReportService patientReportService,
+                            RequestMapper requestMapper) {
+        this.patientReportService = patientReportService;
+        this.requestMapper = requestMapper;
 
     }
 
 
     @GetMapping
     public String getAllReports(
+            @RequestParam(name = "orderAsc", required = false) Optional<Boolean> orderAsc,
             Model model
     ) {
+        List<Report> orderedReports;
+        boolean orderStatus;
 
-        List<Report> reportList = laborantService.getReports();
+        if (orderAsc.isPresent()) {
+            orderedReports = patientReportService
+                    .getReportsOrderedByDate(orderAsc.get());
+            orderStatus = orderAsc.get();
+        } else {
+            orderedReports = patientReportService.getReportsOrderedByDate(false);
+            orderStatus = false;
+        }
 
-        model.addAttribute("reportList", reportList);
+        model.addAttribute("reportList", orderedReports);
+
+        model.addAttribute("orderStatus", orderStatus);
 
         return "reports";
-
     }
 
     @GetMapping("/add")
@@ -57,20 +68,20 @@ public class ReportController {
             @Validated ReportRequest reportRequest
     ) throws IOException {
 
-        Report report = reportMapper.mapToReport(reportRequest);
-        laborantService.saveReport(report);
+        Report report = requestMapper.mapToReport(reportRequest);
 
+        patientReportService.saveReport(report);
         return new RedirectView("/report");
     }
 
 
-    @GetMapping("/{fileNum}")
+    @GetMapping("/detail/{fileNum}")
     public String getReportDetails(
             @PathVariable Integer fileNum,
             @RequestParam(name = "editmode", required = false) Optional<String> editMode,
             Model model
     ) {
-        Report report = laborantService.getReportById(fileNum);
+        Report report = patientReportService.getReportById(fileNum);
 
         model.addAttribute("report", report);
 
@@ -86,11 +97,12 @@ public class ReportController {
             @Validated ReportRequest reportRequest
     ) throws IOException {
 
-        Report report = reportMapper.mapToReport(reportRequest);
-        laborantService.updateReport(report, reportRequest.getFileNum());
+        Report report = requestMapper.mapToReport(reportRequest);
+
+        patientReportService.updateReport(report);
 
 
-        return new RedirectView("/report/" + reportRequest.getFileNum());
+        return new RedirectView("/report/detail/" + reportRequest.getFileNum());
     }
 
 
@@ -99,7 +111,7 @@ public class ReportController {
             @PathVariable Integer fileNum
     ) {
 
-        laborantService.deleteReportById(fileNum);
+        patientReportService.deleteReportById(fileNum);
 
         return new RedirectView("/report");
 
@@ -119,18 +131,18 @@ public class ReportController {
         List<Report> queryResult = Collections.emptyList();
 
         if (request.getLaborantName() != null & request.getLaborantLastName() != null) {
-            queryResult = laborantService.getReportsByLaborantInfo(
-                    request.getLaborantName(),
-                    request.getLaborantLastName()
+            queryResult = patientReportService.getReportsByLaborantInfo(
+                    request.getLaborantName().toLowerCase(),
+                    request.getLaborantLastName().toLowerCase()
             );
         } else if (request.getPatientName() != null & request.getPatientLastName() != null) {
-            queryResult = laborantService.getReportsByPatientInfo(
-                    request.getPatientName(),
-                    request.getPatientLastName()
+            queryResult = patientReportService.getReportsByPatientInfo(
+                    request.getPatientName().toLowerCase(),
+                    request.getPatientLastName().toLowerCase()
             );
         } else if (request.getPatientIdentityNum() != null) {
-            queryResult = laborantService.getReportsByPatientIdentityNum(
-                    request.getPatientIdentityNum()
+            queryResult = patientReportService.getReportsByPatientIdentityNum(
+                    Long.parseLong(request.getPatientIdentityNum())
             );
         }
 
